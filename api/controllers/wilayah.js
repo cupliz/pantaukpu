@@ -24,8 +24,7 @@ const provinsi = async () => {
         output[res1.id] = res1;
       }
     } catch (error) {
-      const { status, statusText } = error.response;
-      output = { status, statusText };
+      output = { status: "404", statusText: "Not Found" };
     }
   }
   return output;
@@ -66,8 +65,7 @@ const kabupaten = async idProv => {
         output[res1.id] = res1;
       }
     } catch (error) {
-      const { status, statusText } = error.response;
-      output = { status, statusText };
+      output = { status: "404", statusText: "Not Found" };
     }
   }
   return output;
@@ -111,8 +109,7 @@ const kecamatan = async (idProv, idKab) => {
         output[res1.id] = res1;
       }
     } catch (error) {
-      const { status, statusText } = error.response;
-      output = { status, statusText };
+      output = { status: "404", statusText: "Not Found" };
     }
   }
   return output;
@@ -161,8 +158,7 @@ const kelurahan = async (idProv, idKab, idKec) => {
         output[res1.id] = res1;
       }
     } catch (error) {
-      const { status, statusText } = error.response;
-      output = { status, statusText };
+      output = { status: "404", statusText: "Not Found" };
     }
   }
   return output;
@@ -183,7 +179,7 @@ const tps = async (idProv, idKab, idKec, idKel) => {
       output[res0.id] = res0;
     }
   } else {
-    // // // add kecamatan to database
+    // add kecamatan to database
     try {
       const { data } = await api.get(
         `${process.env.URL_WILAYAH}/${idProv}/${idKab}/${idKec}/${idKel}.json`
@@ -219,8 +215,7 @@ const tps = async (idProv, idKab, idKec, idKel) => {
         output[res1.id] = res1;
       }
     } catch (error) {
-      const { status, statusText } = error.response;
-      output = { status, statusText };
+      output = { status: "404", statusText: "Not Found" };
     }
   }
   return output;

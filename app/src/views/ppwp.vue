@@ -26,16 +26,14 @@
     
     <table v-if="show=='tps'">
       <tr>
-        <th width="20%">Nama TPS</th>
-        <th width="10%">02</th>
-        <th width="10%">02</th>
-        <th width="10%">Detail</th>
+        <th width="10%">Nama TPS</th>
+        <!-- <th width="10%">Gambar</th> -->
+        <th width="50%">Detail</th>
       </tr>
       <tr v-for="tps in tps" :key="tps.id">
         <td>{{tps.nama}}</td>
-        <td>{{tps.hasil['21']}}</td>
-        <td>{{tps.hasil['22']}}</td>
-        <td>{{JSON.stringify(tps.detail)}}</td>
+        <!-- <td> <img src="https://pemilu2019.kpu.go.id/img/c/900/238/900238858/28380-02-C-XXX-X6.jpg" width="50px" alt=""> </td> -->
+        <td>{{JSON.stringify(tps)}}</td>
       </tr>
     </table>
 	</div>
@@ -109,9 +107,11 @@ export default {
         this.idKec = idKec
         this.idKel = idKel
         let tpsdata = Object.keys(data).map(res => data[res]);
-        // for (let i = 0; i < tpsdata.length; i++) {
-        //   const tpsd = tpsdata[i];
-        //   const { data: tpsdetail } = await axios.get(`http://localhost:4003/ppwp/${idProv}/${idKab}/${idKec}/${idKel}/${tpsd.id}`);
+        
+        // for (let i = 0; i < Object.keys(data).length; i++) {
+        //   const idTPS = Object.keys(data)[i]
+        //   // const { data: tpsdetail } = await axios.get(`http://localhost:4003/ppwp/${idProv}/${idKab}/${idKec}/${idKel}/${idTPS}`);
+        //   // console.log(tpsdetail)
         //   tpsdata.detail = tpsdetail[tpsd.id]
         // }
         this.tps = tpsdata
