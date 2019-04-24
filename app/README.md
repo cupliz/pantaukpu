@@ -1,4 +1,4 @@
-# pantaukpu
+# app
 
 ## Project setup
 ```

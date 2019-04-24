@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "pantau-KPU API server",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec babel-node index.js"
+  },
+  "author": "cupliz",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^2.2.3",
+    "axios": "^0.18.0",
+    "dotenv": "^7.0.0",
+    "knex": "^0.16.5",
+    "koa": "^2.7.0",
+    "koa-json": "^2.0.2",
+    "koa-router": "^7.4.0",
+    "mysql2": "^1.6.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.3"
+  }
+}
