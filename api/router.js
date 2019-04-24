@@ -9,5 +9,6 @@ router.get('/ppwp/:idProv', c.ppwp.kabupaten)
 router.get('/ppwp/:idProv/:idKab', c.ppwp.kecamatan)
 router.get('/ppwp/:idProv/:idKab/:idKec', c.ppwp.kelurahan)
 router.get('/ppwp/:idProv/:idKab/:idKec/:idKel', c.ppwp.tps)
+router.get('/ppwp/:idProv/:idKab/:idKec/:idKel/:idTps', c.ppwp.tpsDetail)
 
 module.exports = router

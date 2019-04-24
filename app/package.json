@@ -1,5 +1,6 @@
 {
   "name": "app",
+  "description": "Aplikasi untuk mengecek kesalahan input oleh KPU",
   "version": "0.1.0",
   "private": true,
   "scripts": {

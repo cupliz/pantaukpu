@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "pantau-KPU API server",
+  "description": "api server",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec babel-node index.js"
