@@ -106,6 +106,8 @@
 		<table v-if="show=='tps'">
 			<tr>
 				<th>Nama TPS</th>
+        <th>01</th>
+        <th>02</th>
         <th>Suara Sah</th>
         <th>Suara Tidak Sah</th>
         <th>Suara Total</th>
@@ -116,11 +118,13 @@
 			</tr>
 			<tr v-for="tps in tps" :key="tps.id" :class="tps.error?'error':''">
 				<td>{{tps.nama}}</td>
-        <td>{{tps.hasil.suara_sah}}</td>
-        <td>{{tps.hasil.suara_tidak_sah}}</td>
-        <td>{{tps.hasil.suara_total}}</td>
-        <td>{{tps.hasil.pemilih_j}}</td>
-        <td>{{tps.hasil.pengguna_j}}</td>
+				<td>{{tps.hasil.chart ? tps.hasil.chart['21'] : 0}}</td>
+				<td>{{tps.hasil.chart ? tps.hasil.chart['22'] : 0}}</td>
+        <td>{{tps.hasil.suara_sah||0}}</td>
+        <td>{{tps.hasil.suara_tidak_sah||0}}</td>
+        <td>{{tps.hasil.suara_total||0}}</td>
+        <td>{{tps.hasil.pemilih_j||0}}</td>
+        <td>{{tps.hasil.pengguna_j||0}}</td>
 				<td>
           <!-- <button @click="showImage(tps)">Show Images</button> -->
           <div>
