@@ -7,7 +7,7 @@ const api = require('../plugins/axios')
 const app = ctx => {
   ctx.body = { app: "hello world" };
 };
-
+sync.index()
 module.exports = {
   app,
   ppwp,

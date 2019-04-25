@@ -4,6 +4,8 @@
   "description": "api server",
   "main": "index.js",
   "scripts": {
+    "db:backup": "docker exec PantauKPU /usr/bin/mysqldump -u root --password=admin pantaukpu > backup.sql",
+    "db:restore": "cat backup.sql | docker exec -i PantauKPU /usr/bin/mysql -u root --password=admin pantaukpu",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },

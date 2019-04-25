@@ -5,6 +5,17 @@ const db = require('../plugins/db')
 
 const provinsi = async ctx => {
   let output = await wilayah.provinsi();
+  for (let i = 0; i < Object.keys(output).length; i++) {
+    const id = Object.keys(output)[i];
+    const getError = await db.table('error')
+    .count('id as error')
+    .where('provinsi',id)
+    const getJumlah = await db.table('ppwp')
+    .count('id as checked')
+    .where('provinsi',id)
+    output[id].checked = getJumlah.length?getJumlah[0].checked:0
+    output[id].error = getError.length?getError[0].error:0
+  }
   ctx.body = output;
 };
 
@@ -80,7 +91,21 @@ const tps = async ctx => {
       const detail = await tpsDetail(id)
       output[id].hasil = Object.keys(detail).length ? JSON.parse(detail.data) : {};
     }
-    ctx.body = output;
+    let result = {}
+    const current = await db.table('kelurahan as kel')
+    .select('kel.nama as kelurahan', 'kec.nama as kecamatan', 'kab.nama as kabupaten', 'prov.nama as provinsi')
+    .leftJoin('kecamatan as kec', 'kec.id', 'kel.kecamatan')
+    .leftJoin('kabupaten as kab', 'kab.id', 'kel.kabupaten')
+    .leftJoin('provinsi as prov', 'prov.id', 'kel.provinsi')
+    .where('kel.id', idKel)
+    if(current.length){
+      result.provinsi = current[0].provinsi
+      result.kabupaten = current[0].kabupaten
+      result.kecamatan = current[0].kecamatan
+      result.kelurahan = current[0].kelurahan
+      result.output = output
+    }
+    ctx.body = result
   } else {
     ctx.body = { status: "404", statusText: "Not Found" };
   }
@@ -90,8 +115,8 @@ const tpsDetail = async idTps => {
   let output = {};
   const get0 = await db.table("ppwp")
     .select('ppwp.*', 'e.type')
-    .leftJoin('error as e', 'e.id', 'ppwp.tps')
-    .where("tps", idTps);
+    .leftJoin('error as e', 'e.id', 'ppwp.id')
+    .where("ppwp.id", idTps);
   if (get0.length) {
     const res0 = get0.length ? get0[0] : {};
     output = res0;
