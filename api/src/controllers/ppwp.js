@@ -10,9 +10,11 @@ const provinsi = async ctx => {
     const getError = await db.table('error')
     .count('id as error')
     .where('provinsi',id)
+    .where('resolve',0)
     const getJumlah = await db.table('ppwp')
     .count('id as checked')
     .where('provinsi',id)
+    .where('ts','>','')
     output[id].checked = getJumlah.length?getJumlah[0].checked:0
     output[id].error = getError.length?getError[0].error:0
   }
@@ -28,6 +30,7 @@ const kabupaten = async ctx => {
       const getError = await db.table('error')
       .count('id as error')
       .where('kabupaten',id)
+      .where('resolve',0)
       const getJumlah = await db.table('ppwp')
       .count('id as checked')
       .where('kabupaten',id)
@@ -49,6 +52,7 @@ const kecamatan = async ctx => {
       const getError = await db.table('error')
       .count('id as error')
       .where('kecamatan',id)
+      .where('resolve',0)
       const getJumlah = await db.table('ppwp')
       .count('id as checked')
       .where('kecamatan',id)
@@ -70,6 +74,7 @@ const kelurahan = async ctx => {
       const getError = await db.table('error')
       .count('id as error')
       .where('kelurahan',id)
+      .where('resolve',0)
       const getJumlah = await db.table('ppwp')
       .count('id as checked')
       .where('kelurahan',id)
@@ -89,7 +94,12 @@ const tps = async ctx => {
     for (let i = 0; i < Object.keys(output).length; i++) {
       const id = Object.keys(output)[i];
       const detail = await tpsDetail(id)
-      output[id].hasil = Object.keys(detail.data).length ? JSON.parse(detail.data) : {};
+      output[id].hasil = Object.keys(detail.data).length ? JSON.parse(detail.data) : {}
+
+      const getError = await db.table('error')
+      .where('id',id)
+      .where('resolve',0)
+      output[id].error = getError.length?getError[0].type:0
     }
     let result = {}
     const current = await db.table('kelurahan as kel')
@@ -114,9 +124,7 @@ const tps = async ctx => {
 const tpsDetail = async idTps => {
   let output = {};
   const get0 = await db.table("ppwp")
-    .select('ppwp.*', 'e.type')
-    .leftJoin('error as e', 'e.id', 'ppwp.id')
-    .where("ppwp.id", idTps);
+    .where("ppwp.id", idTps)
   if (get0.length) {
     const res0 = get0.length ? get0[0] : {};
     output = res0;

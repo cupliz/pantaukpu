@@ -114,7 +114,7 @@
 				<th>Gambar</th>
 				<!-- <th>Detail</th> -->
 			</tr>
-			<tr v-for="tps in tps" :key="tps.id" >
+			<tr v-for="tps in tps" :key="tps.id" :class="tps.error?'error':''">
 				<td>{{tps.nama}}</td>
         <td>{{tps.hasil.suara_sah}}</td>
         <td>{{tps.hasil.suara_tidak_sah}}</td>
@@ -282,3 +282,8 @@ export default {
 	}
 };
 </script>
+<style>
+.error{
+  background-color: #ff8a80;
+}
+</style>
