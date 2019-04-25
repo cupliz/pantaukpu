@@ -192,11 +192,11 @@ export default {
 		},
 		async sync(prov) {
 			console.log(prov.id);
-			const { data } = axios.get(`http://localhost:4003/sync/${prov.id}`);
+			const { data } = axios.get(`${process.env.VUE_APP_API_URL}/sync/${prov.id}`);
 			alert(`${prov.nama} akan segera di update`);
 		},
 		async getProvinsi() {
-			const { data } = await axios.get("http://localhost:4003/ppwp");
+			const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/ppwp`);
 			if (data.status !== "404") {
 				this.show = "provinsi";
 				this.provinsi = Object.keys(data).map(res => data[res]);
@@ -207,7 +207,7 @@ export default {
 		async getKabupaten(idProv) {
 			this.show = "kabupaten";
 			this.idProv = idProv;
-			const { data } = await axios.get(`http://localhost:4003/ppwp/${idProv}`);
+			const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/ppwp/${idProv}`);
 			if (data.status !== "404") {
 				this.kabupaten = Object.keys(data).map(res => data[res]);
 			} else {
@@ -219,7 +219,7 @@ export default {
 			this.idProv = idProv;
 			this.idKab = idKab;
 			const { data } = await axios.get(
-				`http://localhost:4003/ppwp/${idProv}/${idKab}`
+				`${process.env.VUE_APP_API_URL}/ppwp/${idProv}/${idKab}`
 			);
 			if (data.status !== "404") {
 				this.kecamatan = Object.keys(data).map(res => data[res]);
@@ -227,7 +227,7 @@ export default {
 		},
 		async getKelurahan(idProv, idKab, idKec) {
 			const { data } = await axios.get(
-				`http://localhost:4003/ppwp/${idProv}/${idKab}/${idKec}`
+				`${process.env.VUE_APP_API_URL}/ppwp/${idProv}/${idKab}/${idKec}`
 			);
 			if (data.status !== "404") {
 				this.show = "kelurahan";
@@ -241,7 +241,7 @@ export default {
 		},
 		async getTPS(idProv, idKab, idKec, idKel) {
 			const { data } = await axios.get(
-				`http://localhost:4003/ppwp/${idProv}/${idKab}/${idKec}/${idKel}`
+				`${process.env.VUE_APP_API_URL}/ppwp/${idProv}/${idKab}/${idKec}/${idKel}`
 			);
 			if (data.status !== "404") {
 				this.show = "tps";
