@@ -89,7 +89,7 @@ const tps = async ctx => {
     for (let i = 0; i < Object.keys(output).length; i++) {
       const id = Object.keys(output)[i];
       const detail = await tpsDetail(id)
-      output[id].hasil = Object.keys(detail).length ? JSON.parse(detail.data) : {};
+      output[id].hasil = Object.keys(detail.data).length ? JSON.parse(detail.data) : {};
     }
     let result = {}
     const current = await db.table('kelurahan as kel')
