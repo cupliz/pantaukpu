@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vue-cli-service serve --port 4004",
     "build": "vue-cli-service build",
-    "start": "serve -s dist -p 3004"
+    "start": "serve -s dist -p 4004"
   },
   "dependencies": {
     "axios": "^0.18.0",

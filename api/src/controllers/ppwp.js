@@ -1,5 +1,5 @@
-import db from "../plugins/db";
-import wilayah from "./wilayah";
+const wilayah = require('./wilayah')
+const db = require('../plugins/db')
 // const {data: ppwp} = await api.get(`${process.env.URL_PPWP}/${prov}.json`);
 // const {data: wilayah} = await api.get(`${process.env.URL_WILAYAH}/${prov}.json`)
 
@@ -12,6 +12,17 @@ const kabupaten = async ctx => {
   const { idProv } = ctx.params;
   if (idProv > 0) {
     let output = await wilayah.kabupaten(idProv);
+    for (let i = 0; i < Object.keys(output).length; i++) {
+      const id = Object.keys(output)[i];
+      const getError = await db.table('error')
+      .count('id as error')
+      .where('kabupaten',id)
+      const getJumlah = await db.table('ppwp')
+      .count('id as checked')
+      .where('kabupaten',id)
+      output[id].checked = getJumlah.length?getJumlah[0].checked:0
+      output[id].error = getError.length?getError[0].error:0
+    }
     ctx.body = output;
   } else {
     ctx.body = { status: "404", statusText: "Not Found" };
@@ -22,6 +33,17 @@ const kecamatan = async ctx => {
   const { idProv, idKab } = ctx.params;
   if (idProv > 0 && idKab > 0) {
     let output = await wilayah.kecamatan(idProv, idKab);
+    for (let i = 0; i < Object.keys(output).length; i++) {
+      const id = Object.keys(output)[i];
+      const getError = await db.table('error')
+      .count('id as error')
+      .where('kecamatan',id)
+      const getJumlah = await db.table('ppwp')
+      .count('id as checked')
+      .where('kecamatan',id)
+      output[id].checked = getJumlah.length?getJumlah[0].checked:0
+      output[id].error = getError.length?getError[0].error:0
+    }
     ctx.body = output;
   } else {
     ctx.body = { status: "404", statusText: "Not Found" };
@@ -32,6 +54,17 @@ const kelurahan = async ctx => {
   const { idProv, idKab, idKec } = ctx.params;
   if (idProv > 0 && idKab > 0 && idKec > 0) {
     let output = await wilayah.kelurahan(idProv, idKab, idKec);
+    for (let i = 0; i < Object.keys(output).length; i++) {
+      const id = Object.keys(output)[i];
+      const getError = await db.table('error')
+      .count('id as error')
+      .where('kelurahan',id)
+      const getJumlah = await db.table('ppwp')
+      .count('id as checked')
+      .where('kelurahan',id)
+      output[id].checked = getJumlah.length?getJumlah[0].checked:0
+      output[id].error = getError.length?getError[0].error:0
+    }
     ctx.body = output;
   } else {
     ctx.body = { status: "404", statusText: "Not Found" };
@@ -55,7 +88,10 @@ const tps = async ctx => {
 
 const tpsDetail = async idTps => {
   let output = {};
-  const get0 = await db.table("ppwp").where("tps", idTps);
+  const get0 = await db.table("ppwp")
+    .select('ppwp.*', 'e.type')
+    .leftJoin('error as e', 'e.id', 'ppwp.tps')
+    .where("tps", idTps);
   if (get0.length) {
     const res0 = get0.length ? get0[0] : {};
     output = res0;
@@ -63,7 +99,7 @@ const tpsDetail = async idTps => {
   return output;
 };
 
-export default {
+module.exports =  {
   provinsi,
   kabupaten,
   kecamatan,

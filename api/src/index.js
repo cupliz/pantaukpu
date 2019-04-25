@@ -1,7 +1,7 @@
-import 'dotenv/config'
-import koa from 'koa'
-import cors from '@koa/cors'
-import router from './router'
+require('dotenv').config()
+const koa  = require('koa')
+const cors = require('@koa/cors')
+const router = require('./router')
 
 const app = new koa()
 

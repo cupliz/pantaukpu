@@ -4,7 +4,8 @@
   "description": "api server",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node index.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "author": "cupliz",
   "license": "ISC",
@@ -18,9 +19,5 @@
     "koa-router": "^7.4.0",
     "mysql2": "^1.6.5"
   },
-  "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/node": "^7.2.2",
-    "@babel/preset-env": "^7.4.3"
-  }
+  "devDependencies": {}
 }

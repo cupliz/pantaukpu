@@ -1,5 +1,5 @@
-import db from "../plugins/db";
-import api from "../plugins/axios";
+const db = require('../plugins/db')
+const api = require('../plugins/axios')
 
 const provinsi = async () => {
   let output = {};
@@ -221,31 +221,10 @@ const tps = async (idProv, idKab, idKec, idKel) => {
   return output;
 };
 
-const tpsDetail = async (idProv, idKab, idKec, idKel, idTps) => {
-  let output = {};
-  const get0 = await db
-    .table("tps")
-    .select("id", "nama")
-    .where("provinsi", idProv)
-    .where("kabupaten", idKab)
-    .where("kecamatan", idKec)
-    .where("kelurahan", idKel)
-    .where("id", idTps)
-
-  if (get0.length) {
-    for (let i = 0; i < get0.length; i++) {
-      const res0 = get0[i];
-      output[res0.id] = res0;
-    }
-  }
-  return output;
-};
-
-export default {
+module.exports =  {
   provinsi,
   kabupaten,
   kecamatan,
   kelurahan,
-  tps,
-  tpsDetail
+  tps
 };

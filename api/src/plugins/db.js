@@ -1,4 +1,4 @@
-import knex from 'knex'
+const knex = require('knex')
 module.exports = knex({
   client: 'mysql2',
   connection: {
