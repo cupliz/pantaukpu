@@ -1,16 +1,21 @@
 <template>
 	<div>
-		<div v-if="show=='error'">
-			<h1>Not Found</h1>
+		<div v-if="show=='error'" class="container">
+			<h3 class="header">Not Found</h3>
 		</div>
-		<ul>
-      <li style="display: inline-block;" v-for="(br,i) in breadcrumb" :key="i">
-          <router-link :to="br.link">{{br.text}}</router-link> / &nbsp;
-      </li>
-    </ul>
-		<!-- <label v-for="(br,i) in breadcrumb" :key="i"><router-link :to="'/pilpres/'">{{'asd'}}</router-link></label> -->
-		<div v-if="show=='provinsi'">
-			<h1>Provinsi</h1>
+
+    <nav>
+      <div class="nav-wrapper">
+        <div class="container">
+          <a v-for="(br,i) in breadcrumb" :key="i" class="breadcrumb">
+            <router-link :to="br.link">{{br.text}}</router-link>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+		<div v-if="show=='provinsi'" class="container">
+			<h3 class="header">Provinsi</h3>
 			<table>
 				<tr>
 					<th>Nama TPS</th>
@@ -34,8 +39,8 @@
 			</table>
 		</div>
 
-		<div v-if="show=='kabupaten'">
-			<h1>Kabupaten</h1>
+		<div v-if="show=='kabupaten'" class="container">
+			<h3 class="header">Kabupaten</h3>
 			<table>
 				<tr>
 					<th>Nama TPS</th>
@@ -57,8 +62,8 @@
 			</table>
 		</div>
 
-		<div v-if="show=='kecamatan'">
-			<h1>Kecamatan</h1>
+		<div v-if="show=='kecamatan'" class="container">
+			<h3 class="header">Kecamatan</h3>
 			<table>
 				<tr>
 					<th>Nama TPS</th>
@@ -80,8 +85,8 @@
 			</table>
 		</div>
 
-		<div v-if="show=='kelurahan'">
-			<h1>Kelurahan</h1>
+		<div v-if="show=='kelurahan'" class="container">
+			<h3 class="header">Kelurahan</h3>
 			<table>
 				<tr>
 					<th>Nama TPS</th>
@@ -102,39 +107,41 @@
 				</tr>
 			</table>
 		</div>
-
-		<table v-if="show=='tps'">
-			<tr>
-				<th>Nama TPS</th>
-        <th>01</th>
-        <th>02</th>
-        <th>Suara Sah</th>
-        <th>Suara Tidak Sah</th>
-        <th>Suara Total</th>
-        <th>DPT</th>
-        <th>Tercoblos</th>
-				<th>Gambar</th>
-				<!-- <th>Detail</th> -->
-			</tr>
-			<tr v-for="tps in tps" :key="tps.id" :class="tps.error?'error':''">
-				<td>{{tps.nama}}</td>
-				<td>{{tps.hasil.chart ? tps.hasil.chart['21'] : 0}}</td>
-				<td>{{tps.hasil.chart ? tps.hasil.chart['22'] : 0}}</td>
-        <td>{{tps.hasil.suara_sah||0}}</td>
-        <td>{{tps.hasil.suara_tidak_sah||0}}</td>
-        <td>{{tps.hasil.suara_total||0}}</td>
-        <td>{{tps.hasil.pemilih_j||0}}</td>
-        <td>{{tps.hasil.pengguna_j||0}}</td>
-				<td>
-          <!-- <button @click="showImage(tps)">Show Images</button> -->
-          <div>
-            <img v-for="(img,i) in tps.hasil.images" :key="i" width="50px"
-            :src="`https://pemilu2019.kpu.go.id/img/c/${tps.id.toString().substr(0,3)}/${tps.id.toString().substr(3,3)}/${tps.id}/${img}`">
-          </div>
-        </td>
-				<!-- <td>{{JSON.stringify(tps)}}</td> -->
-			</tr>
-		</table>
+    <div v-if="show=='tps'" class="container">
+      
+      <table>
+        <tr>
+          <th>Nama TPS</th>
+          <th>01</th>
+          <th>02</th>
+          <th>Suara Sah</th>
+          <th>Suara Tidak Sah</th>
+          <th>Suara Total</th>
+          <th>DPT</th>
+          <th>Tercoblos</th>
+          <th>Gambar</th>
+          <!-- <th>Detail</th> -->
+        </tr>
+        <tr v-for="tps in tps" :key="tps.id" :class="tps.error?'error':''">
+          <td>{{tps.nama}}</td>
+          <td>{{tps.hasil.chart ? tps.hasil.chart['21'] : 0}}</td>
+          <td>{{tps.hasil.chart ? tps.hasil.chart['22'] : 0}}</td>
+          <td>{{tps.hasil.suara_sah||0}}</td>
+          <td>{{tps.hasil.suara_tidak_sah||0}}</td>
+          <td>{{tps.hasil.suara_total||0}}</td>
+          <td>{{tps.hasil.pemilih_j||0}}</td>
+          <td>{{tps.hasil.pengguna_j||0}}</td>
+          <td>
+            <!-- <button @click="showImage(tps)">Show Images</button> -->
+            <div>
+              <img v-for="(img,i) in tps.hasil.images" :key="i" width="50px"
+              :src="`https://pemilu2019.kpu.go.id/img/c/${tps.id.toString().substr(0,3)}/${tps.id.toString().substr(3,3)}/${tps.id}/${img}`">
+            </div>
+          </td>
+          <!-- <td>{{JSON.stringify(tps)}}</td> -->
+        </tr>
+      </table>
+    </div>
 	</div>
 </template>
 
@@ -203,7 +210,8 @@ export default {
 			const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/ppwp`);
 			if (data.status !== "404") {
 				this.show = "provinsi";
-				this.provinsi = Object.keys(data).map(res => data[res]);
+				this.provinsi = Object.keys(data.table).map(res => data.table[res]);
+				this.showBreadcrumb(data.crumb);
 			} else {
 				this.show = "error";
 			}
@@ -213,7 +221,8 @@ export default {
 			this.idProv = idProv;
 			const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/ppwp/${idProv}`);
 			if (data.status !== "404") {
-				this.kabupaten = Object.keys(data).map(res => data[res]);
+				this.kabupaten = Object.keys(data.table).map(res => data.table[res]);
+				this.showBreadcrumb(data.crumb);
 			} else {
 				this.show = "error";
 			}
@@ -226,7 +235,8 @@ export default {
 				`${process.env.VUE_APP_API_URL}/ppwp/${idProv}/${idKab}`
 			);
 			if (data.status !== "404") {
-				this.kecamatan = Object.keys(data).map(res => data[res]);
+				this.kecamatan = Object.keys(data.table).map(res => data.table[res]);
+				this.showBreadcrumb(data.crumb);
 			}
 		},
 		async getKelurahan(idProv, idKab, idKec) {
@@ -238,7 +248,8 @@ export default {
 				this.idProv = idProv;
 				this.idKab = idKab;
 				this.idKec = idKec;
-				this.kelurahan = Object.keys(data).map(res => data[res]);
+				this.kelurahan = Object.keys(data.table).map(res => data.table[res]);
+				this.showBreadcrumb(data.crumb);
 			} else {
 				this.show = "error";
 			}
@@ -247,14 +258,15 @@ export default {
 			const { data } = await axios.get(
 				`${process.env.VUE_APP_API_URL}/ppwp/${idProv}/${idKab}/${idKec}/${idKel}`
 			);
+        console.log(data)
 			if (data.status !== "404") {
 				this.show = "tps";
 				this.idProv = idProv;
 				this.idKab = idKab;
 				this.idKec = idKec;
 				this.idKel = idKel;
-				let tpsdata = Object.keys(data.output).map(res => data.output[res]);
-				this.showBreadcrumb(data);
+        let tpsdata = Object.keys(data.table).map(res => data.table[res]);
+				this.showBreadcrumb(data.crumb);
 				this.tps = tpsdata;
 			} else {
 				this.show = "error";
