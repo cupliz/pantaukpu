@@ -1,8 +1,7 @@
 const db = require("../plugins/db");
-const api = require("../plugins/axios");
+const {api} = require("../plugins/axios");
 const wilayah = require("./wilayah");
-// 'https://pemilu2019.kpu.go.id/static/json/wilayah/1.json'
-// 'https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp.json'
+
 const queue = async ctx => {
   const { idProv } = ctx.params;
   const payload = {

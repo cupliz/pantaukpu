@@ -1,5 +1,5 @@
 const db = require('../plugins/db')
-const api = require('../plugins/axios')
+const {api} = require('../plugins/axios')
 
 const provinsi = async () => {
   let output = {};

@@ -134,7 +134,7 @@
           <td>
             <!-- <button @click="showImage(tps)">Show Images</button> -->
             <div>
-              <img v-for="(img,i) in tps.hasil.images" :key="i" width="50px"
+              <img class="materialboxed" v-for="(img,i) in tps.hasil.images" :key="i" width="50px"
               :src="`https://pemilu2019.kpu.go.id/img/c/${tps.id.toString().substr(0,3)}/${tps.id.toString().substr(3,3)}/${tps.id}/${img}`">
             </div>
           </td>
@@ -147,6 +147,7 @@
 
 <script>
 import axios from "axios";
+import plugins from "../../public/js/plugins";
 export default {
 	data() {
 		return {
@@ -258,7 +259,6 @@ export default {
 			const { data } = await axios.get(
 				`${process.env.VUE_APP_API_URL}/ppwp/${idProv}/${idKab}/${idKec}/${idKel}`
 			);
-        console.log(data)
 			if (data.status !== "404") {
 				this.show = "tps";
 				this.idProv = idProv;
@@ -294,7 +294,9 @@ export default {
 		search() {} // needed to watch props search
 	},
 	mounted() {
-		this.checkRoute(this.$route.params);
+    plugins()
+    this.checkRoute(this.$route.params);
+    
 	}
 };
 </script>

@@ -1,10 +1,13 @@
 const ppwp = require('./ppwp')
 const wilayah = require('./wilayah')
 const sync = require('./sync')
-const db = require('../plugins/db')
-const api = require('../plugins/axios')
+const {api} = require('../plugins/axios')
 
-const app = ctx => {
+
+const app = async ctx => {
+  const url = "https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp.json"
+  const {data} = await api.get(url)
+  console.log(data)
   ctx.body = { app: "hello world" };
 };
 sync.index()

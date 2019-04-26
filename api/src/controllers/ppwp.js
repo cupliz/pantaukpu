@@ -1,7 +1,5 @@
 const wilayah = require('./wilayah')
 const db = require('../plugins/db')
-// const {data: ppwp} = await api.get(`${process.env.URL_PPWP}/${prov}.json`);
-// const {data: wilayah} = await api.get(`${process.env.URL_WILAYAH}/${prov}.json`)
 
 const provinsi = async ctx => {
   let result = {}
