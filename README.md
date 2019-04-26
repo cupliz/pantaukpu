@@ -1,29 +1,7 @@
-# pantaukpu
+<h1 align="center">PantauKPU</h1>
 
-## Project setup
-```
-npm install
-```
+## Deskripsi
+- Aplikasi PantauKPU adalah sebuah aplikasi yang berfungsi menghitung salah entry data di tiap TPS
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Demo
+- Silahkan kunjungu website kami [PantauKPU.com](https://pantaukpu.com).
