@@ -7,7 +7,7 @@ const {api} = require('../plugins/axios')
 const app = async ctx => {
   const url = "https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp.json"
   const {data} = await api.get(url)
-  console.log(data)
+  console.log(data.length)
   ctx.body = { app: "hello world" };
 };
 sync.index()

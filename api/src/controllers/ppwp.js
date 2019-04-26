@@ -1,21 +1,40 @@
 const wilayah = require('./wilayah')
 const db = require('../plugins/db')
-
+const getStatistic = async (type,id) => {
+  const getData = await db.table('ppwp as p')
+  .count('p.id as checked')
+  .count('e.id as error')
+  .select(db.raw(`sum(case when p.ts > '' then 1 else 0 end) filled`))
+  .leftJoin('error as e', 'e.id', 'p.id')
+  .where(`p.${type}`,id)
+  const checked = getData.length ? getData[0].checked : 0
+  const filled = getData.length ? getData[0].filled : 0
+  const error = getData.length ? getData[0].error : 0
+  return {
+    checked,
+    filled,
+    error
+  }
+}
 const provinsi = async ctx => {
   let result = {}
   let output = await wilayah.provinsi();
   for (let i = 0; i < Object.keys(output).length; i++) {
     const id = Object.keys(output)[i];
-    const getError = await db.table('error')
-    .count('id as error')
-    .where('provinsi',id)
-    .where('resolve',0)
-    const getJumlah = await db.table('ppwp')
-    .count('id as checked')
-    .where('provinsi',id)
-    .where('ts','>','')
-    output[id].checked = getJumlah.length?getJumlah[0].checked:0
-    output[id].error = getError.length?getError[0].error:0
+    const {filled,checked,error} = await getStatistic('provinsi',id)
+    output[id].filled = filled || 0
+    output[id].checked = checked  || 0
+    output[id].error = error || 0
+  }
+  const getAll = await db.table('ppwp as p')
+    .count('p.id as checked')
+    .count('e.id as error')
+    .select(db.raw(`sum(case when p.ts > '' then 1 else 0 end) filled`))
+    .leftJoin('error as e', 'e.id', 'p.id')
+  result.all = {
+    checked: getAll.length ? getAll[0].checked : 0,
+    filled: getAll.length ? getAll[0].filled : 0,
+    error: getAll.length ? getAll[0].error : 0
   }
   const crumb = await breadcrumb(ctx) 
   result.crumb = crumb
@@ -30,15 +49,20 @@ const kabupaten = async ctx => {
     let output = await wilayah.kabupaten(idProv);
     for (let i = 0; i < Object.keys(output).length; i++) {
       const id = Object.keys(output)[i];
-      const getError = await db.table('error')
-      .count('id as error')
-      .where('kabupaten',id)
-      .where('resolve',0)
-      const getJumlah = await db.table('ppwp')
-      .count('id as checked')
-      .where('kabupaten',id)
-      output[id].checked = getJumlah.length?getJumlah[0].checked:0
-      output[id].error = getError.length?getError[0].error:0
+      const {filled,checked,error} = await getStatistic('kabupaten',id)
+      output[id].filled = filled || 0
+      output[id].checked = checked || 0
+      output[id].error = error || 0
+    }
+    const getAll = await db.table('ppwp as p')
+      .count('p.id as checked')
+      .count('e.id as error')
+      .select(db.raw(`sum(case when p.ts > '' then 1 else 0 end) filled`))
+      .leftJoin('error as e', 'e.id', 'p.id')
+    result.all = {
+      checked: getAll.length ? getAll[0].checked : 0,
+      filled: getAll.length ? getAll[0].filled : 0,
+      error: getAll.length ? getAll[0].error : 0
     }
     const crumb = await breadcrumb(ctx) 
     result.crumb = crumb
@@ -56,15 +80,20 @@ const kecamatan = async ctx => {
     let output = await wilayah.kecamatan(idProv, idKab);
     for (let i = 0; i < Object.keys(output).length; i++) {
       const id = Object.keys(output)[i];
-      const getError = await db.table('error')
-      .count('id as error')
-      .where('kecamatan',id)
-      .where('resolve',0)
-      const getJumlah = await db.table('ppwp')
-      .count('id as checked')
-      .where('kecamatan',id)
-      output[id].checked = getJumlah.length?getJumlah[0].checked:0
-      output[id].error = getError.length?getError[0].error:0
+      const {filled,checked,error} = await getStatistic('kecamatan',id)
+      output[id].filled = filled || 0
+      output[id].checked = checked || 0
+      output[id].error = error || 0
+    }
+    const getAll = await db.table('ppwp as p')
+      .count('p.id as checked')
+      .count('e.id as error')
+      .select(db.raw(`sum(case when p.ts > '' then 1 else 0 end) filled`))
+      .leftJoin('error as e', 'e.id', 'p.id')
+    result.all = {
+      checked: getAll.length ? getAll[0].checked : 0,
+      filled: getAll.length ? getAll[0].filled : 0,
+      error: getAll.length ? getAll[0].error : 0
     }
     const crumb = await breadcrumb(ctx) 
     result.crumb = crumb
@@ -82,15 +111,20 @@ const kelurahan = async ctx => {
     let output = await wilayah.kelurahan(idProv, idKab, idKec);
     for (let i = 0; i < Object.keys(output).length; i++) {
       const id = Object.keys(output)[i];
-      const getError = await db.table('error')
-      .count('id as error')
-      .where('kelurahan',id)
-      .where('resolve',0)
-      const getJumlah = await db.table('ppwp')
-      .count('id as checked')
-      .where('kelurahan',id)
-      output[id].checked = getJumlah.length?getJumlah[0].checked:0
-      output[id].error = getError.length?getError[0].error:0
+      const {filled,checked,error} = await getStatistic('kelurahan',id)
+      output[id].filled = filled || 0
+      output[id].checked = checked || 0
+      output[id].error = error || 0
+    }
+    const getAll = await db.table('ppwp as p')
+      .count('p.id as checked')
+      .count('e.id as error')
+      .select(db.raw(`sum(case when p.ts > '' then 1 else 0 end) filled`))
+      .leftJoin('error as e', 'e.id', 'p.id')
+    result.all = {
+      checked: getAll.length ? getAll[0].checked : 0,
+      filled: getAll.length ? getAll[0].filled : 0,
+      error: getAll.length ? getAll[0].error : 0
     }
     const crumb = await breadcrumb(ctx) 
     result.crumb = crumb

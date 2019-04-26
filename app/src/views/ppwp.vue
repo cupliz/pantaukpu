@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div v-if="show=='error'" class="container">
+		<div v-if="show=='error'">
 			<h3 class="header">Not Found</h3>
 		</div>
 
@@ -13,102 +13,124 @@
         </div>
       </div>
     </nav>
-
-		<div v-if="show=='provinsi'" class="container">
-			<h3 class="header">Provinsi</h3>
-			<table>
-				<tr>
-					<th>Nama TPS</th>
-					<th>Error</th>
-					<th>Checked</th>
-					<th>Total TPS</th>
-					<th></th>
-				</tr>
-				<tr
-				 v-for="prov in provinsi"
-				 :key="prov.id"
-				>
-					<td>
-						<router-link :to="'/pilpres/'+prov.id">{{prov.nama}}</router-link>
-					</td>
-					<td style="text-align: center;">{{prov.error}}</td>
-					<td style="text-align: center;">{{prov.checked}}</td>
-					<td style="text-align: center;">{{prov.total}}</td>
-					<td><button @click="sync(prov)">Sync</button></td>
-				</tr>
-			</table>
+		<div class="container">
+			<div class="row">
+				<p><span class="red-text">Error:</span> TPS dengan data salah input</p>
+				<p><span class="green-text">Filled:</span> TPS yang datanya tidak kosong, atau sudah terinput oleh KPU</p>
+				<p><span class="blue-text">Checked:</span> seluruh TPS yang berhasil dicek yang datanya isi maupun masih kosong</p>
+				<p><span class="purple-text">Total: </span> TPS total dari sebuah daerah</p>
+			</div>
 		</div>
 
-		<div v-if="show=='kabupaten'" class="container">
-			<h3 class="header">Kabupaten</h3>
-			<table>
-				<tr>
-					<th>Nama TPS</th>
-					<th>Error</th>
-					<th>Checked</th>
-					<th>Total TPS</th>
-				</tr>
-				<tr
-				 v-for="kab in kabupaten"
-				 :key="kab.id"
-				>
-					<td>
-						<router-link :to="`/pilpres/${idProv}/${kab.id}`">{{kab.nama}}</router-link>
-					</td>
-					<td style="text-align: center;">{{kab.error}}</td>
-					<td style="text-align: center;">{{kab.checked}}</td>
-					<td style="text-align: center;">{{kab.total}}</td>
-				</tr>
-			</table>
-		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col s3 right" v-if="show!=='tps'" style="margin-top: 50px">
+					<h5 class="title">Total Data Masuk</h5>
+					<p class="red-text">TPS Error: <span class="right">{{allStats && allStats.error}}</span></p>
+					<p class="green-text">TPS Filled: <span class="right">{{allStats && allStats.filled}}</span></p>
+					<p class="blue-text">TPS Checked: <span class="right">{{allStats && allStats.checked}}</span></p>
+					<p class="purple-text">Total: <span class="right">{{allStats &&  allStats.total || '-'}}</span> </p>
+				</div>
+				<div class="col s9">
+					<div v-if="show=='provinsi'">
+						<h3 class="header">Provinsi</h3>
+						<table>
+							<tr>
+								<th>Nama TPS</th>
+								<th class="red-text">Error</th>
+								<th class="green-text">Filled</th>
+								<th class="blue-text">Checked</th>
+								<th class="purple-text">Total</th>
+								<th></th>
+							</tr>
+							<tr v-for="prov in provinsi" :key="prov.id" >
+								<td>
+									<router-link :to="'/pilpres/'+prov.id">{{prov.nama}}</router-link>
+								</td>
+								<td>{{prov.error}}</td>
+								<td>{{prov.filled}}</td>
+								<td>{{prov.checked}}</td>
+								<td>{{prov.total || '-'}}</td>
+								<td><button @click="sync(prov)">Sync</button></td>
+							</tr>
+						</table>
+					</div>
 
-		<div v-if="show=='kecamatan'" class="container">
-			<h3 class="header">Kecamatan</h3>
-			<table>
-				<tr>
-					<th>Nama TPS</th>
-					<th>Error</th>
-					<th>Checked</th>
-					<th>Total TPS</th>
-				</tr>
-				<tr
-				 v-for="kec in kecamatan"
-				 :key="kec.id"
-				>
-					<td>
-						<router-link :to="`/pilpres/${idProv}/${idKab}/${kec.id}`">{{kec.nama}}</router-link>
-					</td>
-					<td style="text-align: center;">{{kec.error}}</td>
-					<td style="text-align: center;">{{kec.checked}}</td>
-					<td style="text-align: center;">{{kec.total}}</td>
-				</tr>
-			</table>
-		</div>
+					<div v-if="show=='kabupaten'">
+						<h3 class="header">Kabupaten</h3>
+						<table>
+							<tr>
+								<th>Nama TPS</th>
+								<th class="red-text">Error</th>
+								<th class="green-text">Filled</th>
+								<th class="blue-text">Checked</th>
+								<th class="purple-text">Total</th>
+							</tr>
+							<tr
+							v-for="kab in kabupaten"
+							:key="kab.id"
+							>
+								<td>
+									<router-link :to="`/pilpres/${idProv}/${kab.id}`">{{kab.nama}}</router-link>
+								</td>
+								<td>{{kab.error}}</td>
+								<td>{{kab.checked}}</td>
+								<td>{{kab.total || '-'}}</td>
+							</tr>
+						</table>
+					</div>
 
-		<div v-if="show=='kelurahan'" class="container">
-			<h3 class="header">Kelurahan</h3>
-			<table>
-				<tr>
-					<th>Nama TPS</th>
-					<th>Error</th>
-					<th>Checked</th>
-					<th>Total TPS</th>
-				</tr>
-				<tr
-				 v-for="kel in kelurahan"
-				 :key="kel.id"
-				>
-					<td>
-						<router-link :to="`/pilpres/${idProv}/${idKab}/${idKec}/${kel.id}`">{{kel.nama}}</router-link>
-					</td>
-					<td style="text-align: center;">{{kel.error}}</td>
-					<td style="text-align: center;">{{kel.checked}}</td>
-					<td style="text-align: center;">{{kel.total}}</td>
-				</tr>
-			</table>
+					<div v-if="show=='kecamatan'">
+						<h3 class="header">Kecamatan</h3>
+						<table>
+							<tr>
+								<th>Nama TPS</th>
+								<th class="red-text">Error</th>
+								<th class="green-text">Filled</th>
+								<th class="blue-text">Checked</th>
+								<th class="purple-text">Total</th>
+							</tr>
+							<tr
+							v-for="kec in kecamatan"
+							:key="kec.id"
+							>
+								<td>
+									<router-link :to="`/pilpres/${idProv}/${idKab}/${kec.id}`">{{kec.nama}}</router-link>
+								</td>
+								<td>{{kec.error}}</td>
+								<td>{{kec.checked}}</td>
+								<td>{{kec.total || '-'}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<div v-if="show=='kelurahan'">
+						<h3 class="header">Kelurahan</h3>
+						<table>
+							<tr>
+								<th>Nama TPS</th>
+								<th class="red-text">Error</th>
+								<th class="green-text">Filled</th>
+								<th class="blue-text">Checked</th>
+								<th class="purple-text">Total</th>
+							</tr>
+							<tr
+							v-for="kel in kelurahan"
+							:key="kel.id"
+							>
+								<td>
+									<router-link :to="`/pilpres/${idProv}/${idKab}/${idKec}/${kel.id}`">{{kel.nama}}</router-link>
+								</td>
+								<td>{{kel.error}}</td>
+								<td>{{kel.checked}}</td>
+								<td>{{kel.total || '-'}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
     <div v-if="show=='tps'" class="container">
-      
       <table>
         <tr>
           <th>Nama TPS</th>
@@ -162,7 +184,8 @@ export default {
 			kecamatan: [],
 			kelurahan: [],
 			tps: [],
-      breadcrumb: "",
+			breadcrumb: "",
+			allStats: {}
 		};
 	},
 	methods: {
@@ -212,6 +235,7 @@ export default {
 			if (data.status !== "404") {
 				this.show = "provinsi";
 				this.provinsi = Object.keys(data.table).map(res => data.table[res]);
+				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
 			} else {
 				this.show = "error";
@@ -223,6 +247,7 @@ export default {
 			const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/ppwp/${idProv}`);
 			if (data.status !== "404") {
 				this.kabupaten = Object.keys(data.table).map(res => data.table[res]);
+				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
 			} else {
 				this.show = "error";
@@ -237,6 +262,7 @@ export default {
 			);
 			if (data.status !== "404") {
 				this.kecamatan = Object.keys(data.table).map(res => data.table[res]);
+				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
 			}
 		},
@@ -250,6 +276,7 @@ export default {
 				this.idKab = idKab;
 				this.idKec = idKec;
 				this.kelurahan = Object.keys(data.table).map(res => data.table[res]);
+				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
 			} else {
 				this.show = "error";
@@ -266,6 +293,7 @@ export default {
 				this.idKec = idKec;
 				this.idKel = idKel;
         let tpsdata = Object.keys(data.table).map(res => data.table[res]);
+				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
 				this.tps = tpsdata;
 			} else {
