@@ -71,10 +71,7 @@ const syncTPS = async (idProv, idKab, idKec, idKel, idTps, x) => {
   try {
     let ts = "";
     let string = "";
-    const { data } = await api.get(
-      `${
-        process.env.URL_PPWP
-      }/${idProv}/${idKab}/${idKec}/${idKel}/${idTps}.json`
+    const { data } = await api.get( `${ process.env.URL_PPWP }/${idProv}/${idKab}/${idKec}/${idKel}/${idTps}.json`
     );
     if (Object.keys(data).length) {
       console.log(x, idTps, data.ts);

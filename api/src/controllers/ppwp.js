@@ -109,7 +109,7 @@ const tps = async ctx => {
     for (let i = 0; i < Object.keys(output).length; i++) {
       const id = Object.keys(output)[i];
       const detail = await tpsDetail(id)
-      output[id].hasil = Object.keys(detail.data).length ? JSON.parse(detail.data) : {}
+      output[id].hasil = Object.keys(detail).length && Object.keys(detail.data).length ? JSON.parse(detail.data) : {}
 
       const getError = await db.table('error')
       .where('id',id)

@@ -11,5 +11,5 @@ const api = axios.create({
   httpsAgent: new https.Agent({ rejectUnauthorized: false })
 });
 module.exports = {
-  api: process.env.PROXY ? withProxy : api,
+  api: process.env.PROXY=='true' ? withProxy : api,
 };
