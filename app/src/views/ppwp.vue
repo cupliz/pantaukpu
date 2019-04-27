@@ -9,32 +9,41 @@
         </div>
       </div>
     </nav>
-		<div class="container">
-			<div class="row">
-				<div class="col s12">
-					<p><span class="red-text">Error:</span> TPS dengan data salah input</p>
-					<p><span class="green-text">Filled:</span> TPS yang datanya tidak kosong, atau sudah terinput oleh KPU</p>
-					<p><span class="blue-text">Checked:</span> seluruh TPS yang berhasil dicek yang datanya isi maupun masih kosong</p>
-					<p><span class="purple-text">Total: </span> TPS total dari sebuah daerah</p>
-					<div class="card col s12 cyan lighten-1 white-text">
-						<div class="card-content">
-							Anda dapat membantu mempercepat verifikasi dengan cara menekan tombol &nbsp; 
-							<button class="btn btn-small btn-floating pink accent-2 waves-effect waves-light"><i class="material-icons">refresh</i></button>
-							<br><sub>(*) fitur akan muncul di update berikutnya</sub>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 
 		<div class="container">
 			<div class="row">
+			</div>
+			<div class="row">
+				
+				<div class="card col s12 blue white-text">
+					<div class="card-content">
+					<p class="row">Anda dapat membantu mempercepat verifikasi dengan cara menekan tombol &nbsp; 
+						<button class="btn btn-small btn-floating pink accent-2 waves-effect waves-light"><i class="material-icons">refresh</i></button>
+						<br><sup>(*) fitur akan muncul di update berikutnya</sup>
+					</p>
+					</div>
+				</div>
+				
 				<div class="col s12 m3 right" v-if="show!=='tps'">
-					<h4 class="title">Statistik</h4>
-					<p class="red-text">TPS Error: <span class="right">{{allStats && allStats.error}}</span></p>
-					<p class="green-text">TPS Filled: <span class="right">{{allStats && allStats.filled}}</span></p>
-					<p class="blue-text">TPS Checked: <span class="right">{{allStats && allStats.checked}}</span></p>
-					<p class="purple-text">Total: <span class="right">{{allStats &&  allStats.total || '-'}}</span> </p>
+					<h4 class="pink-text">Statistik</h4>
+					<hr>
+					<div class="row">
+						<div class="col s12">
+							<p class="red-text">TPS Error: <span class="right">{{allStats && allStats.error}}</span></p>
+							<p class="green-text">TPS Filled: <span class="right">{{allStats && allStats.filled}}</span></p>
+							<p class="blue-text">TPS Checked: <span class="right">{{allStats && allStats.checked}}</span></p>
+							<p class="purple-text">Total: <span class="right">{{allStats &&  allStats.total || '-'}}</span> </p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col s12">
+							<p><span class="red-text">Error:</span> TPS dengan data salah input</p>
+							<p><span class="green-text">Filled:</span> TPS yang datanya tidak kosong, atau sudah terinput oleh KPU</p>
+							<p><span class="blue-text">Checked:</span> seluruh TPS yang berhasil dicek yang datanya isi maupun masih kosong</p>
+							<p><span class="purple-text">Total: </span> TPS total dari sebuah daerah</p>
+						</div>
+					</div>
 				</div>
 
 				<div v-if="show=='error'">
@@ -46,7 +55,8 @@
 
 				<div class="col s12 m9">
 					<div v-if="show=='provinsi'">
-						<h4 class="title">Provinsi</h4>
+						<h4 class="pink-text">Provinsi</h4>
+						<hr>
 						<table>
 							<tr>
 								<th>Nama TPS</th>
@@ -70,7 +80,8 @@
 					</div>
 
 					<div v-if="show=='kabupaten'">
-						<h4 class="header">Kabupaten</h4>
+						<h4 class="pink-text">Kabupaten</h4>
+						<hr>
 						<table>
 							<tr>
 								<th>Nama TPS</th>
@@ -87,6 +98,7 @@
 									<router-link :to="`/pilpres/${idProv}/${kab.id}`">{{kab.nama}}</router-link>
 								</td>
 								<td>{{kab.error}}</td>
+								<td>{{kab.filled}}</td>
 								<td>{{kab.checked}}</td>
 								<td>{{kab.total || '-'}}</td>
 							</tr>
@@ -94,7 +106,8 @@
 					</div>
 
 					<div v-if="show=='kecamatan'">
-						<h4 class="header">Kecamatan</h4>
+						<h4 class="pink-text">Kecamatan</h4>
+						<hr>
 						<table>
 							<tr>
 								<th>Nama TPS</th>
@@ -111,6 +124,7 @@
 									<router-link :to="`/pilpres/${idProv}/${idKab}/${kec.id}`">{{kec.nama}}</router-link>
 								</td>
 								<td>{{kec.error}}</td>
+								<td>{{kec.filled}}</td>
 								<td>{{kec.checked}}</td>
 								<td>{{kec.total || '-'}}</td>
 							</tr>
@@ -118,7 +132,8 @@
 					</div>
 
 					<div v-if="show=='kelurahan'">
-						<h4 class="header">Kelurahan</h4>
+						<h4 class="pink-text">Kelurahan</h4>
+						<hr>
 						<table>
 							<tr>
 								<th>Nama TPS</th>
@@ -135,6 +150,7 @@
 									<router-link :to="`/pilpres/${idProv}/${idKab}/${idKec}/${kel.id}`">{{kel.nama}}</router-link>
 								</td>
 								<td>{{kel.error}}</td>
+								<td>{{kel.filled}}</td>
 								<td>{{kel.checked}}</td>
 								<td>{{kel.total || '-'}}</td>
 							</tr>
@@ -157,7 +173,7 @@
           <th>Gambar</th>
           <!-- <th>Detail</th> -->
         </tr>
-        <tr v-for="tps in tps" :key="tps.id" :class="tps.error?'red':''">
+        <tr v-for="tps in tps" :key="tps.id" :class="tps.error?'red accent-1':''">
           <td>{{tps.nama}}</td>
           <td>{{tps.hasil.chart ? tps.hasil.chart['21'] : 0}}</td>
           <td>{{tps.hasil.chart ? tps.hasil.chart['22'] : 0}}</td>
@@ -351,14 +367,3 @@ export default {
 	},
 };
 </script>
-<style>
-/* .materialboxed.active {
-	position: absolute; z-index: 1000; will-change: left, top, width, height; width: 546px; height: 409.5px; left: 102.844px; top: 262.047px; max-width: 546%;
-}
-.material-placeholder{
-	width: 718.906px; height: 487.5px; position: relative; top: 0px; left: 0px;
-}
-#materialbox-overlay{
-	opacity: 0.; width: 1586px; height: 455px; left: 0px; top: 0px;
-} */
-</style>
