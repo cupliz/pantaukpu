@@ -1,11 +1,9 @@
-
+require('./jquery-3.3.1.min.js')
 require('./materialize.min.js')
-function init (){
-  console.log('init')
-  document.addEventListener('DOMContentLoaded', function() {
-    // var elems = document.querySelectorAll('.materialboxed');
-    // var instances = M.Materialbox.init(elems, options);
+function start (){
+  M.AutoInit()
+  $(document).ready(function(){
+    $('.materialboxed').materialbox();
   });
-	M.AutoInit()
 }
-module.exports = init
+module.exports = start

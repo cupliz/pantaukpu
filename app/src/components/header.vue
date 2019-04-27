@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo left">PantauKPU</a>
+      <a href="/" class="brand-logo left" style="margin: 0 8px;">PantauKPU</a>
       <ul class="right hide-on-low-and-down">
         <li><router-link to="/">Home</router-link></li>
         <li><router-link to="/pilpres">Pilpres</router-link></li>

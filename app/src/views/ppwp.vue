@@ -1,9 +1,5 @@
 <template>
 	<div>
-		<div v-if="show=='error'">
-			<h3 class="header">Not Found</h3>
-		</div>
-
     <nav>
       <div class="nav-wrapper">
         <div class="container">
@@ -15,25 +11,42 @@
     </nav>
 		<div class="container">
 			<div class="row">
-				<p><span class="red-text">Error:</span> TPS dengan data salah input</p>
-				<p><span class="green-text">Filled:</span> TPS yang datanya tidak kosong, atau sudah terinput oleh KPU</p>
-				<p><span class="blue-text">Checked:</span> seluruh TPS yang berhasil dicek yang datanya isi maupun masih kosong</p>
-				<p><span class="purple-text">Total: </span> TPS total dari sebuah daerah</p>
+				<div class="col s12">
+					<p><span class="red-text">Error:</span> TPS dengan data salah input</p>
+					<p><span class="green-text">Filled:</span> TPS yang datanya tidak kosong, atau sudah terinput oleh KPU</p>
+					<p><span class="blue-text">Checked:</span> seluruh TPS yang berhasil dicek yang datanya isi maupun masih kosong</p>
+					<p><span class="purple-text">Total: </span> TPS total dari sebuah daerah</p>
+					<div class="card col s12 cyan lighten-1 white-text">
+						<div class="card-content">
+							Anda dapat membantu mempercepat verifikasi dengan cara menekan tombol &nbsp; 
+							<button class="btn btn-small btn-floating pink accent-2 waves-effect waves-light"><i class="material-icons">refresh</i></button>
+							<br><sub>(*) fitur akan muncul di update berikutnya</sub>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<div class="container">
 			<div class="row">
-				<div class="col s3 right" v-if="show!=='tps'" style="margin-top: 50px">
-					<h5 class="title">Total Data Masuk</h5>
+				<div class="col s12 m3 right" v-if="show!=='tps'">
+					<h4 class="title">Statistik</h4>
 					<p class="red-text">TPS Error: <span class="right">{{allStats && allStats.error}}</span></p>
 					<p class="green-text">TPS Filled: <span class="right">{{allStats && allStats.filled}}</span></p>
 					<p class="blue-text">TPS Checked: <span class="right">{{allStats && allStats.checked}}</span></p>
 					<p class="purple-text">Total: <span class="right">{{allStats &&  allStats.total || '-'}}</span> </p>
 				</div>
-				<div class="col s9">
+
+				<div v-if="show=='error'">
+					<h4 class="header">Not Found</h4>
+				</div>
+				<div v-if="show=='loading'">
+					<h5 class="card-title">Loading...</h5>
+				</div>
+
+				<div class="col s12 m9">
 					<div v-if="show=='provinsi'">
-						<h3 class="header">Provinsi</h3>
+						<h4 class="title">Provinsi</h4>
 						<table>
 							<tr>
 								<th>Nama TPS</th>
@@ -41,7 +54,7 @@
 								<th class="green-text">Filled</th>
 								<th class="blue-text">Checked</th>
 								<th class="purple-text">Total</th>
-								<th></th>
+								<!-- <th></th> -->
 							</tr>
 							<tr v-for="prov in provinsi" :key="prov.id" >
 								<td>
@@ -51,13 +64,13 @@
 								<td>{{prov.filled}}</td>
 								<td>{{prov.checked}}</td>
 								<td>{{prov.total || '-'}}</td>
-								<td><button @click="sync(prov)">Sync</button></td>
+								<!-- <td><button @click="sync(prov)">Sync</button></td> -->
 							</tr>
 						</table>
 					</div>
 
 					<div v-if="show=='kabupaten'">
-						<h3 class="header">Kabupaten</h3>
+						<h4 class="header">Kabupaten</h4>
 						<table>
 							<tr>
 								<th>Nama TPS</th>
@@ -81,7 +94,7 @@
 					</div>
 
 					<div v-if="show=='kecamatan'">
-						<h3 class="header">Kecamatan</h3>
+						<h4 class="header">Kecamatan</h4>
 						<table>
 							<tr>
 								<th>Nama TPS</th>
@@ -105,7 +118,7 @@
 					</div>
 
 					<div v-if="show=='kelurahan'">
-						<h3 class="header">Kelurahan</h3>
+						<h4 class="header">Kelurahan</h4>
 						<table>
 							<tr>
 								<th>Nama TPS</th>
@@ -144,7 +157,7 @@
           <th>Gambar</th>
           <!-- <th>Detail</th> -->
         </tr>
-        <tr v-for="tps in tps" :key="tps.id" :class="tps.error?'error':''">
+        <tr v-for="tps in tps" :key="tps.id" :class="tps.error?'red':''">
           <td>{{tps.nama}}</td>
           <td>{{tps.hasil.chart ? tps.hasil.chart['21'] : 0}}</td>
           <td>{{tps.hasil.chart ? tps.hasil.chart['22'] : 0}}</td>
@@ -154,13 +167,12 @@
           <td>{{tps.hasil.pemilih_j||0}}</td>
           <td>{{tps.hasil.pengguna_j||0}}</td>
           <td>
-            <!-- <button @click="showImage(tps)">Show Images</button> -->
             <div>
               <img class="materialboxed" v-for="(img,i) in tps.hasil.images" :key="i" width="50px"
-              :src="`https://pemilu2019.kpu.go.id/img/c/${tps.id.toString().substr(0,3)}/${tps.id.toString().substr(3,3)}/${tps.id}/${img}`">
+              :src="`https://pemilu2019.kpu.go.id/img/c/${tps.id.toString().substr(0,3)}/${tps.id.toString().substr(3,3)}/${tps.id}/${img}`"
+							>
             </div>
           </td>
-          <!-- <td>{{JSON.stringify(tps)}}</td> -->
         </tr>
       </table>
     </div>
@@ -170,6 +182,7 @@
 <script>
 import axios from "axios";
 import plugins from "../../public/js/plugins";
+
 export default {
 	data() {
 		return {
@@ -185,10 +198,17 @@ export default {
 			kelurahan: [],
 			tps: [],
 			breadcrumb: "",
-			allStats: {}
+			allStats: {},
 		};
 	},
 	methods: {
+		toggleLightbox (idTps, source){		
+			document.addEventListener('DOMContentLoaded', function() {
+				const elems = document.querySelectorAll('.materialboxed');
+				const instance = M.Materialbox.getInstance(elems);
+				console.log(instance)
+			});
+		},
 		async showBreadcrumb(data) {
 			const here = location.href
 				.replace(/(\?.*)$/, "")
@@ -226,35 +246,36 @@ export default {
       this.breadcrumb = parts
 		},
 		async sync(prov) {
-			console.log(prov.id);
 			const { data } = axios.get(`${process.env.VUE_APP_API_URL}/sync/${prov.id}`);
 			alert(`${prov.nama} akan segera di update`);
 		},
 		async getProvinsi() {
+			this.show = 'loading'
 			const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/ppwp`);
 			if (data.status !== "404") {
-				this.show = "provinsi";
 				this.provinsi = Object.keys(data.table).map(res => data.table[res]);
 				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
+				this.show = "provinsi";
 			} else {
 				this.show = "error";
 			}
 		},
 		async getKabupaten(idProv) {
-			this.show = "kabupaten";
+			this.show = 'loading'
 			this.idProv = idProv;
 			const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/ppwp/${idProv}`);
 			if (data.status !== "404") {
 				this.kabupaten = Object.keys(data.table).map(res => data.table[res]);
 				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
+				this.show = "kabupaten";
 			} else {
 				this.show = "error";
 			}
 		},
 		async getKecamatan(idProv, idKab) {
-			this.show = "kecamatan";
+			this.show = 'loading'
 			this.idProv = idProv;
 			this.idKab = idKab;
 			const { data } = await axios.get(
@@ -264,30 +285,32 @@ export default {
 				this.kecamatan = Object.keys(data.table).map(res => data.table[res]);
 				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
+				this.show = "kecamatan";
 			}
 		},
 		async getKelurahan(idProv, idKab, idKec) {
+			this.show = "loading";
 			const { data } = await axios.get(
 				`${process.env.VUE_APP_API_URL}/ppwp/${idProv}/${idKab}/${idKec}`
 			);
 			if (data.status !== "404") {
-				this.show = "kelurahan";
 				this.idProv = idProv;
 				this.idKab = idKab;
 				this.idKec = idKec;
 				this.kelurahan = Object.keys(data.table).map(res => data.table[res]);
 				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
+				this.show = "kelurahan";
 			} else {
 				this.show = "error";
 			}
 		},
 		async getTPS(idProv, idKab, idKec, idKel) {
+				this.show = "loading";
 			const { data } = await axios.get(
 				`${process.env.VUE_APP_API_URL}/ppwp/${idProv}/${idKab}/${idKec}/${idKel}`
 			);
 			if (data.status !== "404") {
-				this.show = "tps";
 				this.idProv = idProv;
 				this.idKab = idKab;
 				this.idKec = idKec;
@@ -296,11 +319,13 @@ export default {
 				this.allStats = data.all
 				this.showBreadcrumb(data.crumb);
 				this.tps = tpsdata;
+				this.show = "tps";
 			} else {
 				this.show = "error";
 			}
 		},
 		checkRoute(params) {
+			plugins()
 			const { idProv, idKab, idKec, idKel, idTps } = params;
 			if (idProv && idKab && idKec && idKel) {
 				this.getTPS(idProv, idKab, idKec, idKel);
@@ -322,14 +347,18 @@ export default {
 		search() {} // needed to watch props search
 	},
 	mounted() {
-    plugins()
-    this.checkRoute(this.$route.params);
-    
-	}
+		this.checkRoute(this.$route.params);
+	},
 };
 </script>
 <style>
-.error{
-  background-color: #ff8a80;
+/* .materialboxed.active {
+	position: absolute; z-index: 1000; will-change: left, top, width, height; width: 546px; height: 409.5px; left: 102.844px; top: 262.047px; max-width: 546%;
 }
+.material-placeholder{
+	width: 718.906px; height: 487.5px; position: relative; top: 0px; left: 0px;
+}
+#materialbox-overlay{
+	opacity: 0.; width: 1586px; height: 455px; left: 0px; top: 0px;
+} */
 </style>
