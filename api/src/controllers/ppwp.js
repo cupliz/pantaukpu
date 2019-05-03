@@ -174,35 +174,22 @@ const breadcrumb = async (ctx) => {
   const { idProv, idKab, idKec, idKel } = ctx.params;
   let crumb = {}
   if(idKel){
-    const kelurahan = await db.table('kelurahan').where('id', idKel)
+    const kelurahan = await db.table('kelurahan').select('nama').where('id', idKel)
     crumb.kelurahan = kelurahan? kelurahan[0].nama:''
   }
   if(idKec){
-    const kecamatan = await db.table('kecamatan').where('id', idKec)
+    const kecamatan = await db.table('kecamatan').select('nama').where('id', idKec)
     crumb.kecamatan = kecamatan? kecamatan[0].nama:''
   }
   if(idKab){
-    const kabupaten = await db.table('kabupaten').where('id', idKab)
+    const kabupaten = await db.table('kabupaten').select('nama').where('id', idKab)
     crumb.kabupaten = kabupaten? kabupaten[0].nama:''
   }
   if(idProv){
-    const provinsi = await db.table('provinsi').where('id', idProv)
+    const provinsi = await db.table('provinsi').select('nama').where('id', idProv)
     crumb.provinsi = provinsi? provinsi[0].nama:''
   }
   return crumb
-  // const current = await db.table('kelurahan as kel')
-  // .select('kel.nama as kelurahan', 'kec.nama as kecamatan', 'kab.nama as kabupaten', 'prov.nama as provinsi')
-  // .leftJoin('kecamatan as kec', 'kec.id', 'kel.kecamatan')
-  // .leftJoin('kabupaten as kab', 'kab.id', 'kel.kabupaten')
-  // .leftJoin('provinsi as prov', 'prov.id', 'kel.provinsi')
-  // .where('kel.id', idKel)
-  // if(current.length){
-  //   result.provinsi = current[0].provinsi
-  //   result.kabupaten = current[0].kabupaten
-  //   result.kecamatan = current[0].kecamatan
-  //   result.kelurahan = current[0].kelurahan
-  //   result.output = output
-  // }
 }
 
 module.exports =  {
